@@ -1,0 +1,16 @@
+---
+# tasks file for load_balance
+- name: Download and install keepalived
+  apt:
+    update_cache: yes
+    name:
+      - keepalived
+      - psmisc
+    state: present
+
+- name: Configure the keepalived conf file
+  template: src=keepalived.conf.j2 dest=/etc/keepalived/keepalived.conf mode=0644
+  notify: restart keepalived
+
+- name: Start the keepalived service
+  systemd: name=keepalived state=started enabled=yes

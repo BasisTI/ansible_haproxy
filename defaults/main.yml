@@ -1,0 +1,41 @@
+---
+# defaults file for haproxy
+# @var haproxy_frontend: '' # Set frontend specs to HAProxy
+# @example #
+# haproxy_frontend:
+#   - name: http-in
+#     bind_address: any
+#     bind_port: 80
+#     mode: http
+#     default_backend: servers
+# @end
+haproxy_frontend:
+  - name: http-in
+    bind_address: any
+    bind_port: 80
+    mode: http
+    default_backend: servers 
+
+# @var haproxy_backend: '' # Set backend specs to HAProxy
+# @example #
+# haproxy_backend:
+#   - name: servers
+#     mode: http
+#     balance_method: roundrobin
+#     servers:
+#       - name: server_one
+#         address: 127.0.0.1:8000
+# @end
+haproxy_backend:
+  - name: servers
+    mode: http
+    balance_method: roundrobin
+    servers:
+      - name: server_one
+        address: 127.0.0.1:8000
+
+# @var haproxy_ha_enabled: 'true' # Enable or disable keepalived with float IP
+haproxy_ha_enabled: true
+
+# @var keepalived_authentication_pass: 'P@ssw0rd' # Keepalived password peers
+keepalived_authentication_pass: P@ssw0rd

@@ -1,0 +1,6 @@
+---
+# tasks file for haproxy
+- include_tasks: "{{ ansible_os_family | lower }}/haproxy.yml"
+
+- include_tasks: "{{ ansible_os_family | lower }}/keepalived.yml"
+  when: haproxy_ha_enabled | bool

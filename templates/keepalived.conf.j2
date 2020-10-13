@@ -1,0 +1,29 @@
+vrrp_script chk_haproxy {
+    script "killall -0 haproxy" # check the haproxy process
+    interval 2 # every 2 seconds
+    weight 2 # add 2 points if OK
+}
+
+vrrp_instance haproxy {
+    state {{ (ansible_play_hosts_all.index(inventory_hostname) == 0) | ternary('MASTER','BACKUP') }}
+    interface {{ ansible_facts['default_ipv4']['interface'] }}
+    virtual_router_id 51
+    priority {{ 255 - ansible_play_hosts_all.index(inventory_hostname) }}
+    advert_int 1
+    authentication {
+        auth_type PASS
+        auth_pass {{ keepalived_authentication_pass }}
+    }
+    unicast_src_ip {{ ansible_facts['default_ipv4']['address'] }}
+    unicast_peer {
+{% for peer in ansible_play_hosts_all | difference([inventory_hostname]) %}
+        {{ peer }}
+{% endfor %}
+    }
+    virtual_ipaddress {
+        {{ keepalived_virtual_ipaddress }}
+    } 
+    track_script {
+        chk_haproxy
+    }
+}
