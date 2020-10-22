@@ -3,6 +3,8 @@
 
 An ansible role that installs haproxy on rhel/centos/fedora and debian/ubuntu. 
 
+![Ansible Galaxy](https://github.com/BasisTI/ansible_haproxy/workflows/Ansible%20Galaxy/badge.svg)
+
 ## Tags:
 ## Variables:
 
