@@ -1,38 +1,51 @@
-Role Name
-=========
+# Ansible Role: HAProxy
 
-A brief description of the role goes here.
 
-Requirements
-------------
+An ansible role that installs haproxy on rhel/centos/fedora and debian/ubuntu. 
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+## Tags:
+## Variables:
 
-Role Variables
---------------
+* `haproxy_frontend`: `''` - Set frontend specs to HAProxy
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+example: 
 
-Dependencies
-------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+```yaml
+haproxy_frontend:
+   - name: http-in
+     bind_address: any
+     bind_port: 80
+     mode: http
+     default_backend: servers
+```
 
-Example Playbook
-----------------
+* `haproxy_backend`: `''` - Set backend specs to HAProxy
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+example: 
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
 
-License
--------
+```yaml
+haproxy_backend:
+   - name: servers
+     mode: http
+     balance_method: roundrobin
+     servers:
+       - name: server_one
+         address: 127.0.0.1:8000
+```
 
-BSD
+* `haproxy_ha_enabled`: `'true'` - Enable or disable keepalived with float IP
 
-Author Information
-------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+
+* `keepalived_authentication_pass`: `'P@ssw0rd'` - Keepalived password peers
+
+
+## License
+Mit
+
+
+
+Documentation generated using: [Ansible-autodoc](https://github.com/AndresBott/ansible-autodoc)
+

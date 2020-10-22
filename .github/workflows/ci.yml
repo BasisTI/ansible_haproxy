@@ -1,0 +1,29 @@
+name: Ansible Galaxy
+
+on:
+  push:
+    branches:
+      - master
+      - BASIS-[0-9]+
+
+jobs:
+  lint:
+    if: github.ref != 'refs/heads/master'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        
+      - name: Lint
+        uses: ansible/ansible-lint-action@master
+        with:
+          targets: "./"
+        
+  publish:
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Publish
+        uses: robertdebock/galaxy-action@master
+        with:
+          galaxy_api_key: ${{ secrets.galaxy_api_key }}
